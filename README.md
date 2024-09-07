@@ -12,7 +12,7 @@ Atualmente são utilizadas as versões:
 
 Uma demonstração de uso com [Protobuf][protobuf-java-docs] foi adicionada, pois é um caso de estudo que também carece de exemplos simples.
 
-Devido às classes geradas pelo compilador serem `static final` (imutáveis) existe uma certa dificuldade ao usar o Drools, pois não é possível se aproveitar de `setters` para fácil manuseio dos objetos. Assim, foi criada uma branch específica ([feat/protobuf][branch-protobuf]) para tratar deste caso.
+Devido às classes geradas pelo compilador serem `static final` (imutáveis) existe uma certa dificuldade ao usar o Drools, pois não é possível se aproveitar de `setters` para fácil manuseio dos objetos.
 
 ## Disclaimer
 
@@ -24,6 +24,4 @@ Portanto não conte com qualidade no código, ele foi feito para entendimento pr
 [protobuf-28-release]: https://github.com/protocolbuffers/protobuf/releases/tag/v28.0
 [protobuf-java-docs]: https://protobuf.dev/getting-started/javatutorial/
 [protobuf-java-428]: https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java/4.28.0
-[branch-protobuf]: https://github.com/gomesar9/drools-example/tree/feat/protobuf
 [gh-drools-example]: https://github.com/kiegroup/drools/tree/main/drools-examples/src/main
-
