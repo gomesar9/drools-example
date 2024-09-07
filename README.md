@@ -4,6 +4,7 @@ Este repositório tem o objetivo de disponibilizar um código simples e funciona
 
 Atualmente são utilizadas as versões:
 
+- Java 21
 - [Drools `8.44.0.Final`][drools-844-docs]
 - [Protobuf `28.0`][protobuf-28-release]
 - [protobuf-java `4.28`][protobuf-java-428] (Maven)
@@ -13,6 +14,16 @@ Atualmente são utilizadas as versões:
 Uma demonstração de uso com [Protobuf][protobuf-java-docs] foi adicionada, pois é um caso de estudo que também carece de exemplos simples.
 
 Devido às classes geradas pelo compilador serem `static final` (imutáveis) existe uma certa dificuldade ao usar o Drools, pois não é possível se aproveitar de `setters` para fácil manuseio dos objetos.
+
+## Uso
+
+No Linux, com maven e Java 21:
+
+```
+./run.sh -p -b -r
+```
+
+Irá compilar proto files, buildar aplicação Java e executar.
 
 ## Disclaimer
 
