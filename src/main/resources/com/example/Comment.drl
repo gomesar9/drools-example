@@ -1,0 +1,22 @@
+package com.example
+ 
+import com.example.DroolsExample.Comment;
+import com.example.Priority;
+
+global java.util.List list
+ 
+rule "Check sender and receiver"
+    when
+        $comment: Comment( sender == null || sender.isEmpty() || receiver == null || receiver.isEmpty() )
+    then
+        
+        System.out.println("Invalid sender or receiver in comment: " + $comment.getText());
+end
+
+rule "Set priority to Urgent if message contains 'urgente'"
+    when
+        $comment: Comment( text != null && text.toLowerCase().contains("urgente") )
+    then
+        $comment.setPriority(Priority.URGENT);
+        System.out.println("Priority set to URGENT for comment: " + $comment.getText());
+end
