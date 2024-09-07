@@ -33,6 +33,7 @@
     <maven.compiler.release>11</maven.compiler.release>
     <drools-version>8.44.0.Final</drools-version>
     <slf4j-version>2.0.16</slf4j-version>
+    <protobuf-version>4.28.0</protobuf-version>
     <junit-version>4.13.2</junit-version>
     <logback-version>1.2.9</logback-version>
 
@@ -76,6 +77,13 @@
       <groupId>org.drools</groupId>
       <artifactId>drools-mvel</artifactId>
       <version>${drools-version}</version>
+    </dependency>
+
+    <!-- Protobuf -->
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf-version}</version>
     </dependency>
 
     <!-- Needed for logging -->

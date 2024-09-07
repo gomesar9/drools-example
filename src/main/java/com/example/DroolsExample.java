@@ -1,14 +1,15 @@
 package com.example;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.kie.api.KieServices;
-import org.kie.api.event.rule.DebugAgendaEventListener;
-import org.kie.api.event.rule.DebugRuleRuntimeEventListener;
 import org.kie.api.logger.KieRuntimeLogger;
+import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+
+import com.example.proto.CommentProto.Comment;
 
 public class DroolsExample {
 
@@ -22,84 +23,60 @@ public class DroolsExample {
 
     public static void execute( KieServices kService, KieContainer kContainer ) {
         // Deve condizer com o declarado em META-INF/kmodule.xml
-        KieSession ksession = kContainer.newKieSession("Comment");
+        KieSession kSession = kContainer.newKieSession("Comment");
 
-        ksession.setGlobal( "list", new ArrayList<Object>() );
+        kSession.setGlobal( "list", new ArrayList<Object>() );
 
         // The application can also setup listeners
         //ksession.addEventListener( new DebugAgendaEventListener() );
         //ksession.addEventListener( new DebugRuleRuntimeEventListener() );
 
-        KieRuntimeLogger logger = kService.getLoggers().newFileLogger( ksession, "./drools-example" );
+        KieRuntimeLogger logger = kService.getLoggers().newFileLogger( kSession, "./drools-example" );
 
         // To set up a ThreadedFileLogger, so that the audit view reflects events whilst debugging,
         // uncomment the next line
         // KieRuntimeLogger logger = ks.getLoggers().newThreadedFileLogger( ksession, "./helloworld", 1000 );
 
         // The application can insert facts into the session
-        final Comment message = new Comment( "John", "Jane", "Muito bem Jane." );
-        final Comment message2 = new Comment( "Jane", "John", "Preciso falar com você sobre isso urgente, me ligue." );
-
-        ksession.insert( message );
-        ksession.insert( message2 );
+        final Comment message1 = Comment.newBuilder()
+            .setSender("")
+            .setReceiver("Jane")
+            .setText("Muito bem Jane.")
+            .setPriority(Comment.Priority.URGENT)
+            .build();
+        
+        final Comment message2 = Comment.newBuilder()
+            .setSender("Jane")
+            .setReceiver("John")
+            .setText("Preciso falar com você sobre isso urgente, me ligue.")
+            .build();
+        
+        final Comment message3 = message2.toBuilder()
+            .setPriority(Comment.Priority.URGENT)
+            .setText("")
+            .build();
+        
+        kSession.insert( message1 );
+        kSession.insert( message2 );
+        kSession.insert( message3 );
 
         // and fire the rules
-        ksession.fireAllRules();
+        kSession.fireAllRules();
+
+        // Recuperando os objetos atualizados na sessão
+        Collection<? extends Object> objects = kSession.getObjects(new ClassObjectFilter(Comment.class));
+        for (Object obj : objects) {
+            if (obj instanceof Comment) {
+                Comment updatedComment = (Comment) obj;
+                System.out.println("Updated Comment: " + updatedComment);
+            }
+        }
 
         // Close logger
         logger.close();
 
         // and then dispose the session
-        ksession.dispose();
+        kSession.dispose();
     }
 
-    public static class Comment {
-        private String sender;
-        private String receiver;
-        private String text;
-        private Priority priority;
-
-        public Comment() {
-            this.priority = Priority.NORMAL;
-        }
-
-        public Comment(String sender, String receiver, String text) {
-            this.sender = sender;
-            this.receiver = receiver;
-            this.text = text;
-            this.priority = Priority.NORMAL;
-        }
-
-        public String getReceiver() {
-            return this.receiver;
-        }
-
-        public void setReceiver(final String receiver) {
-            this.receiver = receiver;
-        }
-
-        public String getSender() {
-            return this.sender;
-        }
-
-        public void setSender(final String sender) {
-            this.sender = sender;
-        }
-
-        public Priority getPriority() {
-            return this.priority;
-        }
-
-        public void setPriority(final Priority priority) {
-            this.priority = priority;
-        }
-
-        public String getText() {
-            return this.text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-    }
 }

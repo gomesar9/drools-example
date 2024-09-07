@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_package = "com.example.proto";
+option java_outer_classname = "CommentProto";
+
+message Comment {
+  enum Priority {
+    UNDEFINED = 0;
+    NORMAL = 1;
+    URGENT = 2;
+  }
+
+  string sender = 1;
+  string receiver = 2;
+  string text = 3;
+  Priority priority = 4;
+}
